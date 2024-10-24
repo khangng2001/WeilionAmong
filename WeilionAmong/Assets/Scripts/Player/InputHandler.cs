@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     #region Fields
-        private Vector2 _playerMovement;
+    private Vector2 _playerMovement;
     #endregion
     
     public Vector2 PlayerMovement => _playerMovement;
@@ -35,8 +35,7 @@ public class InputHandler : MonoBehaviour
     {
         _playerMovement = Vector2.zero;
     }
-
-
+    
     private void OnMoving(InputAction.CallbackContext callback)
     {
         _playerMovement = callback.ReadValue<Vector2>();
