@@ -12,7 +12,6 @@ namespace Fusion
         
         private NetworkRunner _runner;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
-        
 
         async void StartGame(GameMode gameMode)
         {
@@ -62,6 +61,7 @@ namespace Fusion
         {
             if (!runner.IsServer) return;
             NetworkObject networkObject = runner.Spawn(playerPrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+            networkObject.AssignInputAuthority(player);
             _spawnedCharacters.Add(player, networkObject);
         }
 
@@ -77,7 +77,13 @@ namespace Fusion
         public void OnInput(NetworkRunner runner, NetworkInput input)
         {
             var data = new NetworkInputData();
-            
+
+            InputHandler inputHandler = GetComponent<InputHandler>();
+            if (inputHandler)
+            {
+                data.MovementInput = inputHandler.PlayerMovement;
+            }
+
             input.Set(data);
         }
 

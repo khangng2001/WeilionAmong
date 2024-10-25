@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,7 +14,7 @@ public class InputHandler : MonoBehaviour
     {
         _playerControls = new PlayerControls();
     }
-    
+
     private void OnEnable()
     {
         _playerControls.Player.Movement.performed += OnMoving;
