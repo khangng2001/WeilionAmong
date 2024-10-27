@@ -1,49 +1,129 @@
-using Fusion;
 using MatchTest;
+using Sirenix.OdinInspector;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class NetworkRunnerManager : MonoBehaviour, ISingleton
 {
-    public GameObject NetworkRunnerPrefab;
-    public GameObject NetworkRunnerObject;
+    [SerializeField] private GameObject networkRunnerPrefab;
+    [SerializeField, ReadOnly] private GameObject _networkRunnerObject;
 
-    public NetworkRunnerController NetworkRunnerController;
+    [SerializeField, ReadOnly] private NetworkRunnerController _networkRunnerController;
 
-    public bool IsFinding;
+    [SerializeField] private bool _isMatching;
+    public bool IsMatching => _isMatching;
 
-    public void FindMatch(Action<bool> callback)
+    #region Fast Test
+    [Button]
+    public void StartHost()
     {
-        if (NetworkRunnerObject == null)
+        if (_networkRunnerObject == null)
         {
-            NetworkRunnerObject = Instantiate(NetworkRunnerPrefab);
-            NetworkRunnerController = NetworkRunnerObject.GetComponent<NetworkRunnerController>();
+            _networkRunnerObject = Instantiate(networkRunnerPrefab);
+            _networkRunnerController = _networkRunnerObject.GetComponent<NetworkRunnerController>();
         }
 
-        NetworkRunnerController.StartGame(GameMode.Host, callback);
+        _networkRunnerController.StartGame(Fusion.GameMode.Host);
     }
-
-    public void Shutdown(Action<bool> callback)
+    [Button]
+    public void Shutdown()
     {
-        if (!NetworkRunnerController) return;
-        NetworkRunnerController.Shutdown();
-        callback?.Invoke(true);
+        if (_networkRunnerController != null)
+        {
+            _networkRunnerController.Shutdown();
+        }
+    }
+    #endregion
+
+    public async void FindMatch(Action<bool> noticationCallback = null, Action disconnectServerCallback = null)
+    {
+        _isMatching = true;
+
+        await StartClient(noticationCallback, disconnectServerCallback);
     }
 
-    //private void Update()
-    //{
-    //    if (IsFinding)
-    //    {
-    //        if (NetworkRunnerObject == null)
-    //        {
-    //            NetworkRunnerObject = Instantiate(NetworkRunnerPrefab);
-    //            NetworkRunner = NetworkRunnerObject.GetComponent<NetworkRunner>();
-    //        }
-    //    }
-    //    else if (NetworkRunnerObject != null)
-    //    {
-    //        Destroy(NetworkRunnerObject);
-    //        if (NetworkRunner)  NetworkRunner = null;
-    //    }
-    //}
+    async Task StartHost(Action<bool> noticationCallback = null, Action disconnectServerCallback = null)
+    {
+        if (!_isMatching)
+        {
+            noticationCallback(false);
+            return;
+        }
+
+        _networkRunnerObject = Instantiate(networkRunnerPrefab);
+        _networkRunnerController = _networkRunnerObject.GetComponent<NetworkRunnerController>();
+
+        await _networkRunnerController.StartGame(Fusion.GameMode.Host, (result) =>
+        {
+            if (result)
+            {
+                if (_isMatching)
+                {
+                    _isMatching = false;
+                    noticationCallback(true);
+                }
+                else
+                {
+                    noticationCallback(false);
+                }
+            }
+            else
+            {
+                _isMatching = false;
+                noticationCallback(false);
+            }
+        }, disconnectServerCallback);
+    }
+
+    async Task StartClient(Action<bool> callback = null, Action disconnectServerCallback = null)
+    {
+        if (_networkRunnerObject == null)
+        {
+            _networkRunnerObject = Instantiate(networkRunnerPrefab);
+            _networkRunnerController = _networkRunnerObject.GetComponent<NetworkRunnerController>();
+        }
+
+        await _networkRunnerController.StartGame(Fusion.GameMode.Client, async (result) =>
+        {
+            if (result)
+            {
+                if (_isMatching)
+                {
+                    _isMatching = false;
+                    callback(true);
+                }
+                else
+                {
+                    callback(false);
+                }
+            }
+            else
+            {
+                await StartHost(callback, disconnectServerCallback);
+            }
+        }, disconnectServerCallback);
+    }
+
+    public void StopMatch()
+    {
+        _isMatching = false;
+        Shutdown();
+    }
+
+    public void Shutdown(Action<bool> callback = null)
+    {
+        if (_networkRunnerController)
+        {
+            _networkRunnerController.Shutdown();
+            _networkRunnerController = null;
+            callback?.Invoke(true);
+        }
+
+        if (_networkRunnerObject)
+        {
+            Destroy(_networkRunnerObject);
+            _networkRunnerObject = null;
+        }
+    }
 }

@@ -27,41 +27,26 @@ public class MatchManager : MonoBehaviour
     public Button ShutdownBtn;
 
     public StateGame StateGame;
-    public bool IsMatching;
     public float MatchTimeCount;
 
     private void Awake()
     {
+        //
         MatchingBtn.onClick.AddListener(() =>
         {
-            IsMatching = true;
-            MatchTimeCount = 0;
-            SwitchState(StateGame.Matching);
-            Singleton<NetworkRunnerManager>.Instance.FindMatch((result) =>
-            {
-                if (result)
-                {
-                    IsMatching = false;
-                    SwitchState(StateGame.Ingame);
-                }
-            });
+            Matching();
         });
 
+        //
         CancelBtn.onClick.AddListener(() =>
         {
-            IsMatching = false;
+            CancelMatching();
         });
 
+        //
         ShutdownBtn.onClick.AddListener(() =>
         {
-            Singleton<NetworkRunnerManager>.Instance.Shutdown((result) =>
-            {
-                if (result)
-                {
-                    IsMatching = false;
-                    SwitchState(StateGame.Lobby);
-                }
-            });
+            Shutdown();
         });
     }
 
@@ -89,17 +74,60 @@ public class MatchManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Matching()
     {
-        if (IsMatching)
+        SwitchState(StateGame.Matching);
+        MatchTimeCount = 0;
+        Singleton<NetworkRunnerManager>.Instance.FindMatch((result) =>
+        {
+            if (result)
+            {
+                SwitchState(StateGame.Ingame);
+            }
+            else
+            {
+                SwitchState(StateGame.Lobby);
+                Debug.LogWarning("Match Again");
+            }
+        }, () =>
+        {
+            SwitchState(StateGame.Lobby);
+            Debug.LogWarning("Disconnect Server");
+        });
+    }
+
+    void CancelMatching()
+    {
+        SwitchState(StateGame.Lobby);
+        Singleton<NetworkRunnerManager>.Instance.StopMatch();
+    }
+
+    void Shutdown()
+    {
+        Singleton<NetworkRunnerManager>.Instance.Shutdown((result) =>
+        {
+            if (result)
+            {
+                SwitchState(StateGame.Lobby);
+            }
+        });
+    }
+
+    void CountTimeMatching()
+    {
+        if (Singleton<NetworkRunnerManager>.Instance.IsMatching)
         {
             MatchTimeCount += Time.deltaTime;
             MatchTimeText.text = MatchTimeCount.ToString();
         }
         else
         {
-
             return;
         }
+    }
+
+    private void Update()
+    {
+        CountTimeMatching();
     }
 }

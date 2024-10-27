@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using Fusion.Sockets;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Fusion;
 using Fusion.Photon.Realtime;
+using System.Threading.Tasks;
 
 namespace MatchTest
 {
@@ -15,45 +15,48 @@ namespace MatchTest
         private NetworkRunner _runner;
         private Dictionary<PlayerRef, NetworkObject> _spawnedCharacters = new Dictionary<PlayerRef, NetworkObject>();
 
-        public SessionInfoScriptableObject sessionInfo;
+        [Header("Data Network")]
+        public string SessionName;
+        public int MaxPlayer;
 
-        public async void StartGame(GameMode gameMode, Action<bool> callback = null)
+        private Action OnDisconnectServer;
+
+        public async Task StartGame(GameMode gameMode, Action<bool> noticationCallback = null, Action disconnectServerCallback = null)
         {
-            _runner = GetComponent<NetworkRunner>();
+            if (!_runner) _runner = GetComponent<NetworkRunner>();
             _runner.ProvideInput = true;
-
-            var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
-            var sceneInfo = new NetworkSceneInfo();
-            if (scene.IsValid)
-                sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
 
             StartGameResult result = await _runner.StartGame(new StartGameArgs()
             {
                 GameMode = gameMode,
-                Scene = scene,
-                SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-                SessionName = sessionInfo.SessionName,
-                PlayerCount = sessionInfo.MaxPlayer,
-                MatchmakingMode = MatchmakingMode.FillRoom,
+                SessionName = SessionName,
+                PlayerCount = MaxPlayer,
+                MatchmakingMode = MatchmakingMode.FillRoom
             });
 
             if (result.Ok)
             {
-                callback?.Invoke(true);
+                noticationCallback(true);
+                OnDisconnectServer = disconnectServerCallback;
             }
             else
             {
-                callback?.Invoke(false);
+                noticationCallback(false);
                 Debug.LogWarning(result.ShutdownReason);
             }
         }
 
         public void Shutdown()
         {
-            _runner = GetComponent<NetworkRunner>();
+            if (!_runner) _runner = GetComponent<NetworkRunner>();
             _runner.Shutdown();
         }
-       
+
+        private void OnDestroy()
+        {
+            OnDisconnectServer?.Invoke();
+        }
+
         public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
         {
 
@@ -89,13 +92,10 @@ namespace MatchTest
             if (inputHandler)
             {
                 data.MovementInput = inputHandler.PlayerMovement;
-                dir = data.MovementInput;
             }
 
             input.Set(data);
         }
-
-        public Vector2 dir;
 
         public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
         {
@@ -104,7 +104,6 @@ namespace MatchTest
 
         public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
         {
-
         }
 
         public void OnConnectedToServer(NetworkRunner runner)
@@ -114,7 +113,6 @@ namespace MatchTest
 
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
         {
-
         }
 
         public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)

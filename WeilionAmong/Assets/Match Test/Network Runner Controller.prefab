@@ -48,7 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab:
     RawGuidValue: 7b402bb7d7f9c794db6bc6ab97bb9a3a
-  sessionInfo: {fileID: 11400000, guid: 471fec4c0b58a0a429162e9ef52118c9, type: 2}
+  SessionName: 
+  MaxPlayer: 2
 --- !u!114 &6697146373204236480
 MonoBehaviour:
   m_ObjectHideFlags: 0
