@@ -42,7 +42,6 @@ namespace MatchTest
             else
             {
                 noticationCallback(false);
-                Debug.LogWarning(result.ShutdownReason);
             }
         }
 
@@ -108,7 +107,6 @@ namespace MatchTest
 
         public void OnConnectedToServer(NetworkRunner runner)
         {
-
         }
 
         public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
@@ -122,7 +120,6 @@ namespace MatchTest
 
         public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
         {
-
         }
 
         public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
@@ -132,7 +129,6 @@ namespace MatchTest
 
         public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
         {
-
         }
 
         public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)

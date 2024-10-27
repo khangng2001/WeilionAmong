@@ -16,7 +16,7 @@ public class NetworkRunnerManager : MonoBehaviour, ISingleton
 
     #region Fast Test
     [Button]
-    public void StartHost()
+    public async void StartHost()
     {
         if (_networkRunnerObject == null)
         {
@@ -24,7 +24,7 @@ public class NetworkRunnerManager : MonoBehaviour, ISingleton
             _networkRunnerController = _networkRunnerObject.GetComponent<NetworkRunnerController>();
         }
 
-        _networkRunnerController.StartGame(Fusion.GameMode.Host);
+        await _networkRunnerController.StartGame(Fusion.GameMode.Host);
     }
     [Button]
     public void Shutdown()
@@ -40,7 +40,43 @@ public class NetworkRunnerManager : MonoBehaviour, ISingleton
     {
         _isMatching = true;
 
-        await StartClient(noticationCallback, disconnectServerCallback);
+        await StartHostOrClient(noticationCallback, disconnectServerCallback);
+    }
+
+    async Task StartHostOrClient(Action<bool> noticationCallback = null, Action disconnectServerCallback = null)
+    {
+        if (!_isMatching)
+        {
+            noticationCallback(false);
+            return;
+        }
+
+        if (_networkRunnerObject == null)
+        {
+            _networkRunnerObject = Instantiate(networkRunnerPrefab);
+            _networkRunnerController = _networkRunnerObject.GetComponent<NetworkRunnerController>();
+        }
+
+        await _networkRunnerController.StartGame(Fusion.GameMode.AutoHostOrClient, (result) =>
+        {
+            if (result)
+            {
+                if (_isMatching)
+                {
+                    _isMatching = false;
+                    noticationCallback(true);
+                }
+                else
+                {
+                    noticationCallback(false);
+                }
+            }
+            else
+            {
+                _isMatching = false;
+                noticationCallback(false);
+            }
+        }, disconnectServerCallback);
     }
 
     async Task StartHost(Action<bool> noticationCallback = null, Action disconnectServerCallback = null)

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab:
-    RawGuidValue: 7b402bb7d7f9c794db6bc6ab97bb9a3a
+    RawGuidValue: 3d8b9c6ff30e2cd49a868b4ff4b02a42
   SessionName: 
   MaxPlayer: 2
 --- !u!114 &6697146373204236480
