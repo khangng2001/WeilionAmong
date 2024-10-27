@@ -29,7 +29,10 @@ namespace MiniTask
 
         public override void OnDrag(PointerEventData eventData)
         {
-            base.OnDrag(eventData);
+            if (isDragSupport && !IsTaskObjectDone)
+            {
+                transform.position = Input.mousePosition;
+            }
         }
 
         public override void OnEndDrag(PointerEventData eventData)

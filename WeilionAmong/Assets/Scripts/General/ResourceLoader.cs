@@ -19,8 +19,6 @@ public class ResourceLoader
                 string key = Path.GetFileName(asset.name);
                 _resourceAssets.Add(key, asset);
             }
-            
-            Debug.Log(assets.ToString());
         }
     }
 

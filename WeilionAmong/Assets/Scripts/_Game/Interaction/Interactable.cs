@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using Sirenix.OdinInspector;
 using MiniTask;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour
 {
-    public EnumInteractable interactableType;
+    [SerializeField] private EnumInteractable interactableType;
 
-    public EnumTask taskType;
-    
-    public virtual void OnPlayerInteracted(Player player)
+    [SerializeField] protected EnumTask taskType;
+
+    public void OnPlayerInteracted(Player player)
     {
         if (interactableType == EnumInteractable.Task)
         {

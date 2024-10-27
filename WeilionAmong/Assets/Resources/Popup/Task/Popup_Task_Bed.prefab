@@ -944,8 +944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactableType: 0
-  taskType: 0
-  taskButton: {fileID: 4332273113308706917}
+  taskType: 2
   taskDoneImg: {fileID: 9124753548982571045}
   taskObjects:
   - {fileID: 7270232286234102892}
@@ -969,7 +968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6603524191580162570
 RectTransform:
   m_ObjectHideFlags: 0
