@@ -2,7 +2,7 @@ using Handler;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Task
+namespace MiniTask
 {
     public class TaskBedDroppableArea : DroppableArea
     {

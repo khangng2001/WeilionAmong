@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Task
+namespace MiniTask
 {
     public interface ITask
     {

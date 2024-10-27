@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Task;
+using MiniTask;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

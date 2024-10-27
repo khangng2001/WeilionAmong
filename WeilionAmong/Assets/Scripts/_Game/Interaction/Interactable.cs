@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using Task;
+using MiniTask;
 using UnityEngine;
 
 public class Interactable : MonoBehaviour

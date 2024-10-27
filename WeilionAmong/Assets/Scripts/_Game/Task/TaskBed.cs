@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Task
+namespace MiniTask
 {
     public class TaskBed : Interactable, ITask
     {
