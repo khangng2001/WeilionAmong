@@ -1,16 +1,17 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using MiniTask;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace MiniTask
 {
-    public class TaskBed : Interactable, ITask
+    public class TaskToilet : Interactable, ITask
     {
         [SerializeField] private GameObject taskDoneImg;
         
-        [SerializeField] private List<TaskBedObject> taskObjects = new();
+        [SerializeField] private Button flushBtn;
+        [SerializeField] private List<TaskToiletObject> taskObjects = new();
         
         private Button _taskButton;
         
@@ -22,18 +23,33 @@ namespace MiniTask
             _taskButton.onClick.AddListener(ClosePopup);
             
             taskDoneImg.SetActive(false);
+            
+            flushBtn.onClick.AddListener(OnFlushBtnClicked);
         }
 
         private void OnDisable()
         {
             _taskButton.onClick.RemoveListener(ClosePopup);
+            
+            flushBtn.onClick.RemoveListener(OnFlushBtnClicked);
         }
 
+        private void OnFlushBtnClicked()
+        {
+            foreach (var taskObject in taskObjects)
+            {
+                if (taskObject.IsInToilet)
+                    taskObject.gameObject.SetActive(false);
+            }
+            
+            TaskCheck();
+        }
+        
         public void TaskCheck()
         {
             foreach (var taskObject in taskObjects)
             {
-                if (!taskObject.IsTaskObjectDone)
+                if (taskObject.gameObject.activeSelf)
                     return;
 
                 if (taskObject == taskObjects[^1])

@@ -21,10 +21,6 @@ namespace Handler
 
         public virtual void OnDrag(PointerEventData eventData)
         {
-            if (isDragSupport)
-            {
-                transform.position = Input.mousePosition;
-            }
         }
 
         public virtual void OnEndDrag(PointerEventData eventData)
