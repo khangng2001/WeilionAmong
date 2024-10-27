@@ -9,6 +9,6 @@ namespace MiniTask
 
         void TaskCheck();
         
-        void CloseTask();
+        void ClosePopup();
     }
 }

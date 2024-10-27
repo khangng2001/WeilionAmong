@@ -1,39 +1,42 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using MiniTask;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class TaskBedObject : Handler.InputHandler
+namespace MiniTask
 {
-    [SerializeField] private Image image;
-    
-    [Space(7)]
-    [SerializeField] private bool isPillow = false;
-    
-    public bool IsPillow => isPillow;
-    public Image Image => image;
-    
-    public bool IsTaskObjectDone { get; set; } = false;
-
-    public override void OnBeginDrag(PointerEventData eventData)
+    public class TaskBedObject : Handler.InputHandler
     {
-        base.OnBeginDrag(eventData);
+        [Space(7)]
+        [SerializeField] private bool isPillow = false;
+    
+        public bool IsPillow => isPillow;
+        public Image Image { get; private set; }
+    
+        public bool IsTaskObjectDone { get; set; } = false;
+
+        private void Start()
+        {
+            Image = GetComponent<Image>();
+        }
+
+        public override void OnBeginDrag(PointerEventData eventData)
+        {
+            base.OnBeginDrag(eventData);
         
-        image.raycastTarget = false;
-    }
+            Image.raycastTarget = false;
+        }
 
-    public override void OnDrag(PointerEventData eventData)
-    {
-        base.OnDrag(eventData);
-    }
+        public override void OnDrag(PointerEventData eventData)
+        {
+            base.OnDrag(eventData);
+        }
 
-    public override void OnEndDrag(PointerEventData eventData)
-    {
-        base.OnEndDrag(eventData);
+        public override void OnEndDrag(PointerEventData eventData)
+        {
+            base.OnEndDrag(eventData);
         
-        image.raycastTarget = true;
+            Image.raycastTarget = true;
+        }
     }
 }
