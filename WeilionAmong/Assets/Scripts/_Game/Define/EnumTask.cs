@@ -1,6 +1,7 @@
 public enum EnumTask
 {
     None,
+    AI,
     Bed,
     Bird,
     Communication,
@@ -12,6 +13,7 @@ public enum EnumTask
     PressurePump,
     SolarPanel,
     Storage,
+    Toilet,
     Weapon
 }
 
