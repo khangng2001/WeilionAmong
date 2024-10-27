@@ -1,9 +1,11 @@
 using Handler;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace MiniTask
 {
+    [RequireComponent(typeof(Image))]
     public class TaskBedDroppableArea : DroppableArea
     {
         [SerializeField] private TaskBed taskBed;
