@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Task
 {
@@ -6,7 +7,7 @@ namespace Task
     {
         Player Player { get; set; }
 
-        void Update();
+        void TaskCheck();
         
         void CloseTask();
     }
