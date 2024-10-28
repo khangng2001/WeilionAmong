@@ -1,6 +1,6 @@
 using System.Collections;
 using DG.Tweening;
-using Task;
+using MiniTask;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,6 +23,16 @@ namespace _Game.Task.PressurePump
         private float _pumpTravelingTime = 0.1f;
         
         public Player Player { get; set; }
+        public void TaskCheck()
+        {
+            
+        }
+
+        public void ClosePopup()
+        {
+            
+        }
+
         public void Update()
         {
             _slider.value = _currentPressure;
