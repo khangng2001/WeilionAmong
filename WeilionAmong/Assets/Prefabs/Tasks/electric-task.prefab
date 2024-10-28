@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1855771114416387053}
   - component: {fileID: 3695954803582872296}
   m_Layer: 5
-  m_Name: pipe green
+  m_Name: wire green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 7396734414821238218}
   - component: {fileID: 8407485496765239374}
   m_Layer: 5
-  m_Name: right-pies
+  m_Name: right-wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -314,7 +314,7 @@ GameObject:
   - component: {fileID: 1447397906697460475}
   - component: {fileID: 2741293554236970161}
   m_Layer: 5
-  m_Name: pipe red
+  m_Name: wire red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -389,7 +389,7 @@ GameObject:
   - component: {fileID: 6103069969527975193}
   - component: {fileID: 6459436204974075961}
   m_Layer: 5
-  m_Name: pipe yellow
+  m_Name: wire yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -509,7 +509,7 @@ GameObject:
   - component: {fileID: 3798593178230033027}
   - component: {fileID: 6059435952815367143}
   m_Layer: 5
-  m_Name: pipe green
+  m_Name: wire green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 3392171450165565385}
   - component: {fileID: 5066223904025385528}
   m_Layer: 5
-  m_Name: pipe yellow
+  m_Name: wire yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -659,7 +659,7 @@ GameObject:
   - component: {fileID: 6032937503326520366}
   - component: {fileID: 2774436235541220605}
   m_Layer: 5
-  m_Name: pipe red
+  m_Name: wire red
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -735,7 +735,7 @@ GameObject:
   - component: {fileID: 3601234823414730820}
   - component: {fileID: 5884207599320461984}
   m_Layer: 5
-  m_Name: left-pies
+  m_Name: left-wire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
